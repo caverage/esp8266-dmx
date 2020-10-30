@@ -1,0 +1,88 @@
+#include <Arduino.h>
+
+#define dmxMaxChannel 8
+
+#define DMXSPEED 250000
+#define DMXFORMAT SERIAL_8N2
+#define BREAKSPEED 83333
+#define BREAKFORMAT SERIAL_8N1
+
+uint8_t dmxData[dmxMaxChannel] = {};
+#define chanSize 8
+
+void setup(void) {
+  Serial.begin(115200);
+  Serial.println("Serial started.");
+}
+
+void loop(void) {
+  dmxData[0] = 255;
+  dmxData[1] = 255;
+  dmxData[2] = 255;
+  dmxData[3] = 255;
+  dmxData[4] = 255;
+  dmxData[5] = 0;
+  dmxData[6] = 0;
+  dmxData[7] = 0;
+  dmxData[8] = 0;
+  send_dmx();
+  // delay(500);
+  // dmxData[1] = 0;
+  // dmxData[2] = 255;
+  // dmxData[3] = 255;
+  // dmxData[4] = 255;
+  // dmxData[5] = 0;
+  // dmxData[6] = 0;
+  // dmxData[7] = 0;
+  // dmxData[8] = 0;
+  // send_dmx();
+  // delay(500);
+  // dmxData[1] = 255;
+  // dmxData[2] = 0;
+  // dmxData[3] = 255;
+  // dmxData[4] = 255;
+  // dmxData[5] = 0;
+  // dmxData[6] = 0;
+  // dmxData[7] = 0;
+  // dmxData[8] = 0;
+  // send_dmx();
+  // delay(500);
+  // dmxData[1] = 255;
+  // dmxData[2] = 255;
+  // dmxData[3] = 0;
+  // dmxData[4] = 255;
+  // dmxData[5] = 0;
+  // dmxData[6] = 0;
+  // dmxData[7] = 0;
+  // dmxData[8] = 0;
+  // send_dmx();
+  // delay(500);
+  // dmxData[1] = 255;
+  // dmxData[2] = 255;
+  // dmxData[3] = 255;
+  // dmxData[4] = 0;
+  // dmxData[5] = 0;
+  // dmxData[6] = 0;
+  // dmxData[7] = 0;
+  // dmxData[8] = 0;
+  // send_dmx();
+  // delay(500);
+}
+
+void send_dmx(void) {
+  // Send break
+  Serial1.flush();
+  Serial1.begin(BREAKSPEED, BREAKFORMAT);
+  Serial1.flush();
+  Serial1.write(0);
+  delay(1);
+  // Serial1.end();
+
+  // send data
+  Serial1.flush();
+  Serial1.begin(DMXSPEED, DMXFORMAT);
+  Serial1.flush();
+  Serial1.write(dmxData, chanSize);
+  // delay(1);
+  // Serial1.end();
+}
